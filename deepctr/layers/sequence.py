@@ -153,7 +153,7 @@ class AttentionSequencePoolingLayer(Layer):
             if input_shape[0][-1] != input_shape[1][-1] or input_shape[0][1] != 1 or input_shape[2][1] != 1:
                 raise ValueError('A `AttentionSequencePoolingLayer` layer requires '
                                  'inputs of a 3 inputs with shape (None,1,embedding_size),(None,T,embedding_size) and (None,1)'
-                                 'Got different shapes: %s,%s and %s' % (input_shape))
+                                 'Got different shapes: %s,%s and %s' % (input_shape[0], input_shape[1], input_shape[2]))
         else:
             pass
         super(AttentionSequencePoolingLayer, self).build(
