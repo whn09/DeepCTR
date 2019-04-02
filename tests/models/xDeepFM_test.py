@@ -5,7 +5,8 @@ from ..utils import check_model, get_test_data
 
 @pytest.mark.parametrize(
     'hidden_size,cin_layer_size,cin_split_half,cin_activation,sparse_feature_num,dense_feature_dim',
-    [((), (), True, 'linear', 1, 2), ((8,), (), True, 'linear', 1, 1), ((), (8,), True, 'linear', 2, 2), ((8,), (8,), False, 'relu', 1, 0)
+    [((), (), True, 'linear', 1, 2), ((8,), (), True, 'linear', 1, 1), ((), (8,), True, 'linear', 2, 2),
+     ((8,), (8,), False, 'relu', 1, 0)
      ]
 )
 def test_xDeepFM(hidden_size, cin_layer_size, cin_split_half, cin_activation, sparse_feature_num, dense_feature_dim):
@@ -30,7 +31,7 @@ def test_xDeepFM_invalid(hidden_size, cin_layer_size):
                                    'sparse_3': 10}, 'dense': ['dense_1', 'dense_2', 'dense_3']}
     with pytest.raises(ValueError):
         _ = xDeepFM(feature_dim_dict, hidden_size=hidden_size,
-                    cin_layer_size=cin_layer_size,)
+                    cin_layer_size=cin_layer_size, )
 
 
 if __name__ == "__main__":

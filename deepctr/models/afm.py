@@ -19,7 +19,7 @@ from ..layers.utils import concat_fun
 
 def AFM(feature_dim_dict, embedding_size=8, use_attention=True, attention_factor=8,
         l2_reg_linear=1e-5, l2_reg_embedding=1e-5, l2_reg_att=1e-5, keep_prob=1.0, init_std=0.0001, seed=1024,
-        final_activation='sigmoid',):
+        final_activation='sigmoid', ):
     """Instantiates the Attentonal Factorization Machine architecture.
 
     :param feature_dim_dict: dict,to indicate sparse field and dense field like {'sparse':{'field_1':4,'field_2':3,'field_3':2},'dense':['field_4','field_5']}

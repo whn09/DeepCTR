@@ -13,14 +13,10 @@ from threading import Thread
 
 import requests
 
-
-
-
 try:
     from packaging.version import parse
 except ImportError:
     from pip._vendor.packaging.version import parse
-
 
 VarLenFeat = collections.namedtuple(
     'VarLenFeat', ['name', 'dimension', 'maxlen', 'combiner'])
@@ -45,10 +41,12 @@ def check_version(version):
                     if not ver.is_prerelease:
                         latest_version = max(latest_version, ver)
                 if latest_version > version:
-                    logging.warning('\nDeepCTR version {0} detected. Your version is {1}.\nUse `pip install -U deepctr` to upgrade.Changelog: https://github.com/shenweichen/DeepCTR/releases/tag/v{0}'.format(
-                        latest_version, version))
+                    logging.warning(
+                        '\nDeepCTR version {0} detected. Your version is {1}.\nUse `pip install -U deepctr` to upgrade.Changelog: https://github.com/shenweichen/DeepCTR/releases/tag/v{0}'.format(
+                            latest_version, version))
         except Exception:
             return
+
     Thread(target=check, args=(version,)).start()
 
 

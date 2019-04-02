@@ -12,6 +12,5 @@ from .xdeepfm import xDeepFM
 from .autoint import AutoInt
 from .nffm import NFFM
 
-
-__all__ = ["AFM", "DCN", "MLR",  "DeepFM",
+__all__ = ["AFM", "DCN", "MLR", "DeepFM",
            "MLR", "NFM", "DIN", "DIEN", "FNN", "PNN", "WDL", "xDeepFM", "AutoInt", "NFFM"]

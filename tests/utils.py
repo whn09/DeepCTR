@@ -10,23 +10,23 @@ from tensorflow.python.keras.layers import Input, Masking
 from tensorflow.python.keras.models import Model, load_model, save_model
 
 from deepctr.utils import SingleFeat, VarLenFeat
-from deepctr.layers import  custom_objects
+from deepctr.layers import custom_objects
 
 
 def gen_sequence(dim, max_len, sample_size):
-    return np.array([np.random.randint(0, dim, max_len) for _ in range(sample_size)]), np.random.randint(1, max_len + 1, sample_size)
+    return np.array([np.random.randint(0, dim, max_len) for _ in range(sample_size)]), np.random.randint(1, max_len + 1,
+                                                                                                         sample_size)
 
 
 def get_test_data(sample_size=1000, sparse_feature_num=1, dense_feature_num=1, sequence_feature=('max', 'mean', 'sum'),
                   classification=True, include_length=False):
-
     feature_dim_dict = {"sparse": [], 'dense': [], 'sequence': []}
 
     for i in range(sparse_feature_num):
         dim = np.random.randint(1, 10)
-        feature_dim_dict['sparse'].append(SingleFeat('sparse_'+str(i), dim))
+        feature_dim_dict['sparse'].append(SingleFeat('sparse_' + str(i), dim))
     for i in range(dense_feature_num):
-        feature_dim_dict['dense'].append(SingleFeat('dense_'+str(i), 0))
+        feature_dim_dict['dense'].append(SingleFeat('dense_' + str(i), 0))
     for i, mode in enumerate(sequence_feature):
         dim = np.random.randint(1, 10)
         maxlen = np.random.randint(1, 10)
@@ -69,7 +69,6 @@ def layer_test(layer_cls, kwargs={}, input_shape=None, input_dtype=None,
             raise AssertionError()
 
         if not input_dtype:
-
             input_dtype = K.floatx()
 
         input_data_shape = list(input_shape)
@@ -77,7 +76,6 @@ def layer_test(layer_cls, kwargs={}, input_shape=None, input_dtype=None,
         for i, e in enumerate(input_data_shape):
 
             if e is None:
-
                 input_data_shape[i] = np.random.randint(1, 4)
         input_mask = []
         if all(isinstance(e, tuple) for e in input_data_shape):
@@ -88,7 +86,7 @@ def layer_test(layer_cls, kwargs={}, input_shape=None, input_dtype=None,
                     (10 * np.random.random(e)).astype(input_dtype))
                 if supports_masking:
                     a = np.full(e[:2], False)
-                    a[:, :e[1]//2] = True
+                    a[:, :e[1] // 2] = True
                     input_mask.append(a)
 
         else:
@@ -98,7 +96,7 @@ def layer_test(layer_cls, kwargs={}, input_shape=None, input_dtype=None,
             input_data = input_data.astype(input_dtype)
             if supports_masking:
                 a = np.full(input_data_shape[:2], False)
-                a[:, :input_data_shape[1]//2] = True
+                a[:, :input_data_shape[1] // 2] = True
 
                 print(a)
                 print(a.shape)
@@ -107,15 +105,12 @@ def layer_test(layer_cls, kwargs={}, input_shape=None, input_dtype=None,
     else:
 
         if input_shape is None:
-
             input_shape = input_data.shape
 
         if input_dtype is None:
-
             input_dtype = input_data.dtype
 
     if expected_output_dtype is None:
-
         expected_output_dtype = input_dtype
 
     # instantiation
@@ -189,11 +184,9 @@ def layer_test(layer_cls, kwargs={}, input_shape=None, input_dtype=None,
         if expected_dim is not None:
 
             if not (expected_dim == actual_dim):
-
                 raise AssertionError()
 
     if expected_output is not None:
-
         assert_allclose(actual_output, expected_output, rtol=1e-3)
 
     # test serialization, weight setting at model level
@@ -203,7 +196,6 @@ def layer_test(layer_cls, kwargs={}, input_shape=None, input_dtype=None,
     recovered_model = model.__class__.from_config(model_config)
 
     if model.weights:
-
         weights = model.get_weights()
 
         recovered_model.set_weights(weights)
@@ -217,7 +209,6 @@ def layer_test(layer_cls, kwargs={}, input_shape=None, input_dtype=None,
     # different behavior at training and testing time).
 
     if has_arg(layer.call, 'training'):
-
         model.compile('rmsprop', 'mse')
 
         model.train_on_batch(input_data, actual_output)
@@ -275,7 +266,6 @@ def has_arg(fn, name, accept_all=False):
         arg_spec = inspect.getargspec(fn)
 
         if accept_all and arg_spec.keywords is not None:
-
             return True
 
         return (name in arg_spec.args)
@@ -285,7 +275,6 @@ def has_arg(fn, name, accept_all=False):
         arg_spec = inspect.getfullargspec(fn)
 
         if accept_all and arg_spec.varkw is not None:
-
             return True
 
         return (name in arg_spec.args or
@@ -305,7 +294,6 @@ def has_arg(fn, name, accept_all=False):
                 for param in signature.parameters.values():
 
                     if param.kind == inspect.Parameter.VAR_KEYWORD:
-
                         return True
 
             return False
@@ -320,10 +308,10 @@ def check_model(model, model_name, x, y):
                   metrics=['binary_crossentropy'])
     model.fit(x, y, batch_size=100, epochs=1, validation_split=0.5)
 
-    print(model_name+" test train valid pass!")
+    print(model_name + " test train valid pass!")
     model.save_weights(model_name + '_weights.h5')
     model.load_weights(model_name + '_weights.h5')
-    print(model_name+" test save load weight pass!")
+    print(model_name + " test save load weight pass!")
     save_model(model, model_name + '.h5')
     model = load_model(model_name + '.h5', custom_objects)
     print(model_name + " test save load model pass!")

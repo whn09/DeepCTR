@@ -31,7 +31,7 @@ genres_list = list(map(split, data['genres'].values))
 genres_length = np.array(list(map(len, genres_list)))
 max_len = max(genres_length)
 # Notice : padding=`post`
-genres_list = pad_sequences(genres_list, maxlen=max_len, padding='post',)
+genres_list = pad_sequences(genres_list, maxlen=max_len, padding='post', )
 
 # 2.count #unique features for each sparse field and generate feature config for sequence feature
 
@@ -45,12 +45,12 @@ sparse_input = [data[feat.name].values for feat in sparse_feat_list]
 dense_input = []
 sequence_input = [genres_list]
 model_input = sparse_input + dense_input + \
-    sequence_input  # make sure the order is right
+              sequence_input  # make sure the order is right
 
 # 4.Define Model,compile and train
 model = DeepFM({"sparse": sparse_feat_list,
                 "sequence": sequence_feature}, final_activation='linear')
 
-model.compile("adam", "mse", metrics=['mse'],)
+model.compile("adam", "mse", metrics=['mse'], )
 history = model.fit(model_input, data[target].values,
-                    batch_size=256, epochs=10, verbose=2, validation_split=0.2,)
+                    batch_size=256, epochs=10, verbose=2, validation_split=0.2, )

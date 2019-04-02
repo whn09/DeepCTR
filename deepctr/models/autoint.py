@@ -17,9 +17,10 @@ from ..utils import check_feature_config_dict
 from ..layers.utils import concat_fun
 
 
-def AutoInt(feature_dim_dict, embedding_size=8, att_layer_num=3, att_embedding_size=8, att_head_num=2, att_res=True, hidden_size=(256, 256), activation='relu',
+def AutoInt(feature_dim_dict, embedding_size=8, att_layer_num=3, att_embedding_size=8, att_head_num=2, att_res=True,
+            hidden_size=(256, 256), activation='relu',
             l2_reg_deep=0, l2_reg_embedding=1e-5, use_bn=False, keep_prob=1.0, init_std=0.0001, seed=1024,
-            final_activation='sigmoid',):
+            final_activation='sigmoid', ):
     """Instantiates the AutoInt Network architecture.
 
     :param feature_dim_dict: dict,to indicate sparse field and dense field like {'sparse':{'field_1':4,'field_2':3,'field_3':2},'dense':['field_4','field_5']}
@@ -45,8 +46,8 @@ def AutoInt(feature_dim_dict, embedding_size=8, att_layer_num=3, att_embedding_s
     check_feature_config_dict(feature_dim_dict)
 
     deep_emb_list, _, inputs_list = preprocess_input_embedding(feature_dim_dict, embedding_size,
-                                                                          l2_reg_embedding, 0, init_std,
-                                                                          seed, False)
+                                                               l2_reg_embedding, 0, init_std,
+                                                               seed, False)
     att_input = concat_fun(deep_emb_list, axis=1)
 
     for _ in range(att_layer_num):

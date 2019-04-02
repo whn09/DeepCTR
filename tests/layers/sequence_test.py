@@ -22,14 +22,16 @@ SEQ_LENGTH = 10
 def test_AttentionSequencePoolingLayer(weight_normalization):
     with CustomObjectScope({'AttentionSequencePoolingLayer': sequence.AttentionSequencePoolingLayer}):
         layer_test(sequence.AttentionSequencePoolingLayer, kwargs={'weight_normalization': weight_normalization},
-                   input_shape=[(BATCH_SIZE, 1, EMBEDDING_SIZE), (BATCH_SIZE, SEQ_LENGTH, EMBEDDING_SIZE), (BATCH_SIZE, 1)])
+                   input_shape=[(BATCH_SIZE, 1, EMBEDDING_SIZE), (BATCH_SIZE, SEQ_LENGTH, EMBEDDING_SIZE),
+                                (BATCH_SIZE, 1)])
 
 
 @pytest.mark.parametrize(
 
     'mode,supports_masking,input_shape',
 
-    [('sum', False, [(BATCH_SIZE, SEQ_LENGTH, EMBEDDING_SIZE), (BATCH_SIZE, 1)]), ('mean', True, (BATCH_SIZE, SEQ_LENGTH, EMBEDDING_SIZE)), ('max', True, (BATCH_SIZE, SEQ_LENGTH, EMBEDDING_SIZE))
+    [('sum', False, [(BATCH_SIZE, SEQ_LENGTH, EMBEDDING_SIZE), (BATCH_SIZE, 1)]),
+     ('mean', True, (BATCH_SIZE, SEQ_LENGTH, EMBEDDING_SIZE)), ('max', True, (BATCH_SIZE, SEQ_LENGTH, EMBEDDING_SIZE))
      ]
 
 )
@@ -54,5 +56,7 @@ def test_BiLSTM(merge_mode):
 
 def test_Transformer():
     with CustomObjectScope({'Transformer': sequence.Transformer}):
-        layer_test(sequence.Transformer, kwargs={'att_embedding_size': 1, 'head_num': 8, 'use_layer_norm': True, 'supports_masking': False},
-                   input_shape=[(BATCH_SIZE, SEQ_LENGTH, EMBEDDING_SIZE), (BATCH_SIZE, SEQ_LENGTH, EMBEDDING_SIZE), (BATCH_SIZE, 1), (BATCH_SIZE, 1)])
+        layer_test(sequence.Transformer,
+                   kwargs={'att_embedding_size': 1, 'head_num': 8, 'use_layer_norm': True, 'supports_masking': False},
+                   input_shape=[(BATCH_SIZE, SEQ_LENGTH, EMBEDDING_SIZE), (BATCH_SIZE, SEQ_LENGTH, EMBEDDING_SIZE),
+                                (BATCH_SIZE, 1), (BATCH_SIZE, 1)])

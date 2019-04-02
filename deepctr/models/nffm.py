@@ -24,6 +24,7 @@ from ..layers.core import MLP, PredictionLayer
 from ..layers.utils import concat_fun
 from ..utils import check_feature_config_dict
 
+
 def NFFM(feature_dim_dict, embedding_size=4, hidden_size=(128, 128),
          l2_reg_embedding=1e-5, l2_reg_linear=1e-5, l2_reg_deep=0,
          init_std=0.0001, seed=1024, final_activation='sigmoid', include_linear=True, use_bn=True, reduce_sum=False,
@@ -54,7 +55,7 @@ def NFFM(feature_dim_dict, embedding_size=4, hidden_size=(128, 128),
         feature_dim_dict)
 
     sparse_embedding, dense_embedding, linear_embedding = get_embeddings(
-        feature_dim_dict, embedding_size, init_std, seed, l2_reg_embedding, l2_reg_linear,)
+        feature_dim_dict, embedding_size, init_std, seed, l2_reg_embedding, l2_reg_linear, )
 
     embed_list = []
     for i, j in itertools.combinations(feature_dim_dict['sparse'], 2):
@@ -106,8 +107,7 @@ def NFFM(feature_dim_dict, embedding_size=4, hidden_size=(128, 128),
     return model
 
 
-def get_embeddings(feature_dim_dict, embedding_size, init_std, seed, l2_rev_V, l2_reg_w,):
-
+def get_embeddings(feature_dim_dict, embedding_size, init_std, seed, l2_rev_V, l2_reg_w, ):
     sparse_embedding = {j.name: {feat.name: Embedding(j.dimension, embedding_size,
                                                       embeddings_initializer=RandomNormal(
                                                           mean=0.0, stddev=0.0001, seed=seed),
@@ -115,12 +115,15 @@ def get_embeddings(feature_dim_dict, embedding_size, init_std, seed, l2_rev_V, l
                                                           l2_rev_V),
                                                       name='sparse_emb_' + str(j.name) + '_' + str(
                                                           i) + '-' + feat.name) for i, feat in
-                                 enumerate(feature_dim_dict["sparse"]+feature_dim_dict['dense'])} for j in feature_dim_dict["sparse"]}
+                                 enumerate(feature_dim_dict["sparse"] + feature_dim_dict['dense'])} for j in
+                        feature_dim_dict["sparse"]}
 
-    dense_embedding = {j.name: {feat.name: Dense(embedding_size, kernel_initializer=RandomNormal(mean=0.0, stddev=0.0001,
-                                                                                                 seed=seed), use_bias=False, kernel_regularizer=l2(l2_rev_V), name='sparse_emb_' + str(j.name) + '_' + str(
-        i) + '-' + feat.name) for i, feat in
-        enumerate(feature_dim_dict["sparse"]+feature_dim_dict["dense"])} for j in feature_dim_dict["dense"]}
+    dense_embedding = {
+    j.name: {feat.name: Dense(embedding_size, kernel_initializer=RandomNormal(mean=0.0, stddev=0.0001,
+                                                                              seed=seed), use_bias=False,
+                              kernel_regularizer=l2(l2_rev_V), name='sparse_emb_' + str(j.name) + '_' + str(
+            i) + '-' + feat.name) for i, feat in
+             enumerate(feature_dim_dict["sparse"] + feature_dim_dict["dense"])} for j in feature_dim_dict["dense"]}
 
     linear_embedding = {feat.name: Embedding(feat.dimension, 1,
                                              embeddings_initializer=RandomNormal(

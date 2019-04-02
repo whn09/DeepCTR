@@ -1,8 +1,10 @@
-from .core import LocalActivationUnit,MLP,PredictionLayer
-from .interaction import AFMLayer,BiInteractionPooling,CIN,CrossNet,FM,InnerProductLayer,InteractingLayer,OutterProductLayer
+from .core import LocalActivationUnit, MLP, PredictionLayer
+from .interaction import AFMLayer, BiInteractionPooling, CIN, CrossNet, FM, InnerProductLayer, InteractingLayer, \
+    OutterProductLayer
 from .normalization import LayerNormalization
 from .activation import Dice
-from .sequence import SequencePoolingLayer,AttentionSequencePoolingLayer,BiLSTM,Transformer,Position_Embedding,BiasEncoding
+from .sequence import SequencePoolingLayer, AttentionSequencePoolingLayer, BiLSTM, Transformer, Position_Embedding, \
+    BiasEncoding
 from .utils import NoMask
 
 custom_objects = {'InnerProductLayer': InnerProductLayer,
@@ -22,5 +24,5 @@ custom_objects = {'InnerProductLayer': InnerProductLayer,
                   'LayerNormalization': LayerNormalization,
                   'BiLSTM': BiLSTM,
                   'Transformer': Transformer,
-                  'NoMask':NoMask,
-                  'BiasEncoding':BiasEncoding}
+                  'NoMask': NoMask,
+                  'BiasEncoding': BiasEncoding}

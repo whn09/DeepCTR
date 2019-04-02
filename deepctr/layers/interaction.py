@@ -113,7 +113,7 @@ class AFMLayer(Layer):
         self.normalized_att_score = tf.nn.softmax(tf.tensordot(
             attention_temp, self.projection_h, axes=(-1, 0)), dim=1)
         attention_output = tf.reduce_sum(
-            self.normalized_att_score*bi_interaction, axis=1)
+            self.normalized_att_score * bi_interaction, axis=1)
 
         attention_output = tf.nn.dropout(
             attention_output, self.keep_prob, seed=1024)
@@ -130,7 +130,7 @@ class AFMLayer(Layer):
                              'on a list of inputs.')
         return (None, 1)
 
-    def get_config(self,):
+    def get_config(self, ):
         config = {'attention_factor': self.attention_factor,
                   'l2_reg_w': self.l2_reg_w, 'keep_prob': self.keep_prob, 'seed': self.seed}
         base_config = super(AFMLayer, self).get_config()
@@ -175,7 +175,7 @@ class BiInteractionPooling(Layer):
             concated_embeds_value, axis=1, keep_dims=True))
         sum_of_square = tf.reduce_sum(
             concated_embeds_value * concated_embeds_value, axis=1, keep_dims=True)
-        cross_term = 0.5*(square_of_sum - sum_of_square)
+        cross_term = 0.5 * (square_of_sum - sum_of_square)
 
         return cross_term
 
@@ -206,7 +206,7 @@ class CIN(Layer):
         - [Lian J, Zhou X, Zhang F, et al. xDeepFM: Combining Explicit and Implicit Feature Interactions for Recommender Systems[J]. arXiv preprint arXiv:1803.05170, 2018.] (https://arxiv.org/pdf/1803.05170.pdf)
     """
 
-    def __init__(self, layer_size=(128, 128), activation='relu',split_half=True,  l2_reg=1e-5,seed=1024, **kwargs):
+    def __init__(self, layer_size=(128, 128), activation='relu', split_half=True, l2_reg=1e-5, seed=1024, **kwargs):
         if len(layer_size) == 0:
             raise ValueError(
                 "layer_size must be a list(tuple) of length greater than 1")
@@ -230,7 +230,8 @@ class CIN(Layer):
             self.filters.append(self.add_weight(name='filter' + str(i),
                                                 shape=[1, self.field_nums[-1]
                                                        * self.field_nums[0], size],
-                                                dtype=tf.float32, initializer=glorot_uniform(seed=self.seed + i), regularizer=l2(self.l2_reg)))
+                                                dtype=tf.float32, initializer=glorot_uniform(seed=self.seed + i),
+                                                regularizer=l2(self.l2_reg)))
 
             self.bias.append(self.add_weight(name='bias' + str(i), shape=[size], dtype=tf.float32,
                                              initializer=tf.keras.initializers.Zeros()))
@@ -346,13 +347,13 @@ class CrossNet(Layer):
                 "Unexpected inputs dimensions %d, expect to be 2 dimensions" % (len(input_shape),))
 
         dim = input_shape[-1].value
-        self.kernels = [self.add_weight(name='kernel'+str(i),
+        self.kernels = [self.add_weight(name='kernel' + str(i),
                                         shape=(dim, 1),
                                         initializer=glorot_normal(
                                             seed=self.seed),
                                         regularizer=l2(self.l2_reg),
                                         trainable=True) for i in range(self.layer_num)]
-        self.bias = [self.add_weight(name='bias'+str(i),
+        self.bias = [self.add_weight(name='bias' + str(i),
                                      shape=(dim, 1),
                                      initializer=Zeros(),
                                      trainable=True) for i in range(self.layer_num)]
@@ -373,7 +374,7 @@ class CrossNet(Layer):
         x_l = tf.squeeze(x_l, axis=2)
         return x_l
 
-    def get_config(self,):
+    def get_config(self, ):
 
         config = {'layer_num': self.layer_num,
                   'l2_reg': self.l2_reg, 'seed': self.seed}
@@ -509,7 +510,7 @@ class InnerProductLayer(Layer):
         else:
             return (input_shape[0], num_pairs, embed_size)
 
-    def get_config(self,):
+    def get_config(self, ):
         config = {'reduce_sum': self.reduce_sum, }
         base_config = super(InnerProductLayer, self).get_config()
         return dict(list(base_config.items()) + list(config.items()))
@@ -549,14 +550,18 @@ class InteractingLayer(Layer):
             raise ValueError(
                 "Unexpected inputs dimensions %d, expect to be 3 dimensions" % (len(input_shape)))
         embedding_size = input_shape[-1].value
-        self.W_Query = self.add_weight(name='query', shape=[embedding_size, self.att_embedding_size * self.head_num], dtype=tf.float32,
+        self.W_Query = self.add_weight(name='query', shape=[embedding_size, self.att_embedding_size * self.head_num],
+                                       dtype=tf.float32,
                                        initializer=tf.keras.initializers.TruncatedNormal(seed=self.seed))
-        self.W_key = self.add_weight(name='key', shape=[embedding_size, self.att_embedding_size * self.head_num], dtype=tf.float32,
-                                     initializer=tf.keras.initializers.TruncatedNormal(seed=self.seed+1))
-        self.W_Value = self.add_weight(name='value', shape=[embedding_size, self.att_embedding_size * self.head_num], dtype=tf.float32,
-                                       initializer=tf.keras.initializers.TruncatedNormal(seed=self.seed+2))
+        self.W_key = self.add_weight(name='key', shape=[embedding_size, self.att_embedding_size * self.head_num],
+                                     dtype=tf.float32,
+                                     initializer=tf.keras.initializers.TruncatedNormal(seed=self.seed + 1))
+        self.W_Value = self.add_weight(name='value', shape=[embedding_size, self.att_embedding_size * self.head_num],
+                                       dtype=tf.float32,
+                                       initializer=tf.keras.initializers.TruncatedNormal(seed=self.seed + 2))
         if self.use_res:
-            self.W_Res = self.add_weight(name='res', shape=[embedding_size, self.att_embedding_size * self.head_num], dtype=tf.float32,
+            self.W_Res = self.add_weight(name='res', shape=[embedding_size, self.att_embedding_size * self.head_num],
+                                         dtype=tf.float32,
                                          initializer=tf.keras.initializers.TruncatedNormal(seed=self.seed))
 
         # Be sure to call this somewhere!
@@ -656,10 +661,12 @@ class OutterProductLayer(Layer):
         embed_size = input_shape[-1].value
         if self.kernel_type == 'mat':
 
-            self.kernel = self.add_weight(shape=(embed_size, num_pairs, embed_size), initializer=glorot_uniform(seed=self.seed),
+            self.kernel = self.add_weight(shape=(embed_size, num_pairs, embed_size),
+                                          initializer=glorot_uniform(seed=self.seed),
                                           name='kernel')
         elif self.kernel_type == 'vec':
-            self.kernel = self.add_weight(shape=(num_pairs, embed_size,), initializer=glorot_uniform(self.seed), name='kernel'
+            self.kernel = self.add_weight(shape=(num_pairs, embed_size,), initializer=glorot_uniform(self.seed),
+                                          name='kernel'
                                           )
         elif self.kernel_type == 'num':
             self.kernel = self.add_weight(
@@ -737,7 +744,7 @@ class OutterProductLayer(Layer):
         num_pairs = int(num_inputs * (num_inputs - 1) / 2)
         return (None, num_pairs)
 
-    def get_config(self,):
+    def get_config(self, ):
         config = {'kernel_type': self.kernel_type, 'seed': self.seed}
         base_config = super(OutterProductLayer, self).get_config()
         return dict(list(base_config.items()) + list(config.items()))

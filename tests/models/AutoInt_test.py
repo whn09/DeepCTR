@@ -13,7 +13,7 @@ def test_AutoInt(att_layer_num, hidden_size, sparse_feature_num):
     x, y, feature_dim_dict = get_test_data(
         sample_size, sparse_feature_num, sparse_feature_num)
 
-    model = AutoInt(feature_dim_dict,  att_layer_num=att_layer_num,
+    model = AutoInt(feature_dim_dict, att_layer_num=att_layer_num,
                     hidden_size=hidden_size, keep_prob=0.5, )
     check_model(model, model_name, x, y)
 

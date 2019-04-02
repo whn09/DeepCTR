@@ -8,7 +8,6 @@ from ..utils import check_model, get_test_data
     [((8,), 1), ((8, 8,), 2)]
 )
 def test_NFM(hidden_size, sparse_feature_num):
-
     model_name = "NFM"
 
     sample_size = 64

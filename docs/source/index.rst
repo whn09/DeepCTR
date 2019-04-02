@@ -1,7 +1,7 @@
 .. DeepCTR documentation master file, created by
-   sphinx-quickstart on Fri Nov 23 21:08:54 2018.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+sphinx-quickstart on Fri Nov 23 21:08:54 2018.
+You can adapt this file completely to your liking, but it should at least
+contain the root `toctree` directive.
 
 Welcome to DeepCTR's documentation!
 ===================================

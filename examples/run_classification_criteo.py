@@ -9,10 +9,10 @@ if __name__ == "__main__":
     data = pd.read_csv('./criteo_sample.txt')
 
     sparse_features = ['C' + str(i) for i in range(1, 27)]
-    dense_features = ['I'+str(i) for i in range(1, 14)]
+    dense_features = ['I' + str(i) for i in range(1, 14)]
 
     data[sparse_features] = data[sparse_features].fillna('-1', )
-    data[dense_features] = data[dense_features].fillna(0,)
+    data[dense_features] = data[dense_features].fillna(0, )
     target = ['label']
 
     # 1.Label Encoding for sparse features,and do simple Transformation for dense features
@@ -33,9 +33,9 @@ if __name__ == "__main__":
 
     train, test = train_test_split(data, test_size=0.2)
     train_model_input = [train[feat.name].values for feat in sparse_feature_list] + \
-        [train[feat.name].values for feat in dense_feature_list]
+                        [train[feat.name].values for feat in dense_feature_list]
     test_model_input = [test[feat.name].values for feat in sparse_feature_list] + \
-        [test[feat.name].values for feat in dense_feature_list]
+                       [test[feat.name].values for feat in dense_feature_list]
 
     # 4.Define Model,train,predict and evaluate
     model = DeepFM({"sparse": sparse_feature_list,

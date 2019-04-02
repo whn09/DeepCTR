@@ -24,10 +24,10 @@ SEQ_LENGTH = 10
      ]
 
 )
-def test_CrossNet(layer_num, l2_reg,):
+def test_CrossNet(layer_num, l2_reg, ):
     with CustomObjectScope({'CrossNet': layers.CrossNet}):
         layer_test(layers.CrossNet, kwargs={
-                   'layer_num': layer_num, 'l2_reg': l2_reg}, input_shape=(2, 3))
+            'layer_num': layer_num, 'l2_reg': l2_reg}, input_shape=(2, 3))
 
 
 def test_CrossNet_invalid():
@@ -46,7 +46,7 @@ def test_CrossNet_invalid():
 def test_InnerProductLayer(reduce_sum):
     with CustomObjectScope({'InnerProductLayer': layers.InnerProductLayer}):
         layer_test(layers.InnerProductLayer, kwargs={
-            'reduce_sum': reduce_sum}, input_shape=[(BATCH_SIZE, 1, EMBEDDING_SIZE)]*FIELD_SIZE)
+            'reduce_sum': reduce_sum}, input_shape=[(BATCH_SIZE, 1, EMBEDDING_SIZE)] * FIELD_SIZE)
 
 
 @pytest.mark.parametrize(
@@ -58,7 +58,7 @@ def test_InnerProductLayer(reduce_sum):
 def test_OutterProductLayer(kernel_type):
     with CustomObjectScope({'OutterProductLayer': layers.OutterProductLayer}):
         layer_test(layers.OutterProductLayer, kwargs={
-            'kernel_type': kernel_type}, input_shape=[(BATCH_SIZE, 1, EMBEDDING_SIZE)]*FIELD_SIZE)
+            'kernel_type': kernel_type}, input_shape=[(BATCH_SIZE, 1, EMBEDDING_SIZE)] * FIELD_SIZE)
 
 
 def test_BiInteractionPooling():
@@ -76,7 +76,7 @@ def test_FM():
 def test_AFMLayer():
     with CustomObjectScope({'AFMLayer': layers.AFMLayer}):
         layer_test(layers.AFMLayer, kwargs={}, input_shape=[(
-            BATCH_SIZE, 1, EMBEDDING_SIZE)]*FIELD_SIZE)
+            BATCH_SIZE, 1, EMBEDDING_SIZE)] * FIELD_SIZE)
 
 
 @pytest.mark.parametrize(
@@ -90,7 +90,7 @@ def test_AFMLayer():
 def test_CIN(layer_size, activation, split_half):
     with CustomObjectScope({'CIN': layers.CIN}):
         layer_test(layers.CIN, kwargs={"layer_size": layer_size, "activation":
-                                       activation, "split_half": split_half}, input_shape=(
+            activation, "split_half": split_half}, input_shape=(
             BATCH_SIZE, FIELD_SIZE, EMBEDDING_SIZE))
 
 
@@ -113,10 +113,8 @@ def test_test_CIN_invalid(layer_size):
      for use_res in [True, False]
      ]
 )
-def test_InteractingLayer(head_num, use_res,):
+def test_InteractingLayer(head_num, use_res, ):
     with CustomObjectScope({'InteractingLayer': layers.InteractingLayer}):
         layer_test(layers.InteractingLayer, kwargs={"head_num": head_num, "use_res":
-                                                    use_res, }, input_shape=(
+            use_res, }, input_shape=(
             BATCH_SIZE, FIELD_SIZE, EMBEDDING_SIZE))
-
-
